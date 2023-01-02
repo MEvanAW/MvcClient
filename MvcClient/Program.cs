@@ -17,6 +17,11 @@ builder.Services.AddAuthentication(options =>
         options.AuthorizationEndpoint = builder.Configuration["Authentication:OpenIdConnect:Authority"];
         options.TokenEndpoint = builder.Configuration["Authentication:OpenIdConnect:ClientSecret"];
     });
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
 
 var app = builder.Build();
 
