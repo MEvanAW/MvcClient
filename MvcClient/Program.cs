@@ -1,7 +1,22 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = "Cookies";
+    options.DefaultChallengeScheme = "oidc";
+})
+    .AddCookie("Cookies")
+    .AddOAuth("oidc", options =>
+    {
+        builder.Configuration.GetSection("Authentication:OpenIdConnect").Bind(options);
+        options.SignInScheme = "Cookies";
+        options.SaveTokens = true;
+        options.CallbackPath = new PathString("/signin-oidc");
+        options.AuthorizationEndpoint = builder.Configuration["Authentication:OpenIdConnect:Authority"];
+        options.TokenEndpoint = builder.Configuration["Authentication:OpenIdConnect:ClientSecret"];
+    });
 
 var app = builder.Build();
 
@@ -12,11 +27,18 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+else
+{
+    app.UseDeveloperExceptionPage();
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseCookiePolicy();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
