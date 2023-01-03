@@ -3,27 +3,15 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
-<h2></h2>
-
-<a asp-area="" asp-controller="Home" asp-action="Login" class="btn btn-success">Call Api</a>
-<h2>Claims</h2>
-<dl>
-    @foreach (var claim in User.Claims)
-    {
-        <dt>@claim.Type</dt>
-        <dd>@claim.Value</dd>
-    }
-</dl>
-
-<h2>Properties</h2>
-<dl>
+<div class="text-center">
+    <h1 class="display-4">Welcome to MvcClient</h1>
     @if (User.Claims.Count() > 0)
     {
-        @foreach (var prop in (await Context.AuthenticateAsync()).Properties.Items)
-        {
-            <dt>@prop.Key</dt>
-            <dd>@prop.Value</dd>
-        }
+        <p>Please use navbar above to navigate around the website.</p>
     }
-</dl>
+    else
+    {
+        <p>You need to login to use full features of MvcClient.</p>
+        <a asp-area="" asp-controller="Home" asp-action="Login" class="btn btn-primary">Login</a>
+    }
+</div>
