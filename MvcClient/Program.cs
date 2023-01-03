@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,14 +10,12 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = "oidc";
 })
     .AddCookie("Cookies")
-    .AddOAuth("oidc", options =>
+    .AddOpenIdConnect("oidc", options =>
     {
         builder.Configuration.GetSection("Authentication:OpenIdConnect").Bind(options);
         options.SignInScheme = "Cookies";
+        options.RequireHttpsMetadata = false;
         options.SaveTokens = true;
-        options.CallbackPath = new PathString("/signin-oidc");
-        options.AuthorizationEndpoint = builder.Configuration["Authentication:OpenIdConnect:Authority"];
-        options.TokenEndpoint = builder.Configuration["Authentication:OpenIdConnect:ClientSecret"];
     });
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
