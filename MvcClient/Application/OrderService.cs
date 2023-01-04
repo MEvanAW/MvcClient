@@ -39,5 +39,28 @@ namespace MvcClient.Application
                 ? orderModels
                 : new List<OrderModel>();
         }
+
+        public async Task<OrderDetailModel> Details(OrderDetailDto orderDetailDto)
+        {
+            _logger.LogInformation("Getting order details with guid: {guid}", orderDetailDto.Id);
+            var bodyJson = new StringContent(JsonConvert.SerializeObject(orderDetailDto), Encoding.UTF8, MediaTypeNames.Application.Json);
+            var httpResponseMessage = await _httpClient.PostAsync("Orders/details", bodyJson);
+            httpResponseMessage.EnsureSuccessStatusCode();
+            string? responseString = await httpResponseMessage.Content.ReadAsStringAsync();
+            var dictionary = responseString is not null
+                ? JsonConvert.DeserializeObject<IDictionary<string, object?>>(responseString)
+                : null;
+            var data = dictionary is not null
+                ? dictionary["data"]
+                : null;
+            var orderDetails = data is not null
+                ? ((JObject)data).ToObject<OrderDetailModel>()
+                : null;
+            return orderDetails is not null
+                ? orderDetails
+                : new OrderDetailModel {
+                    Id= orderDetailDto.Id
+                };
+        }
     }
 }

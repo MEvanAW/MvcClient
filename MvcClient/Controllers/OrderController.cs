@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MvcClient.Application;
 using MvcClient.Dtos.Order;
-using MvcClient.Models.Order;
 
 namespace MvcClient.Controllers
 {
@@ -21,10 +20,10 @@ namespace MvcClient.Controllers
 
         public async Task<IActionResult> Details([FromRoute] Guid id)
         {
-            return View(new OrderDetailModel
-            {
+            var orderDetailDto = new OrderDetailDto {
                 Id = id
-            });
+            };
+            return View(await _orderService.Details(orderDetailDto));
         }
     }
 }
