@@ -13,9 +13,9 @@ namespace MvcClient.Controllers
             _orderService = orderService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_orderService.Filter(new OrderFilterDto()));
+            return View(await _orderService.Filter(new OrderFilterDto()));
         }
     }
 }

@@ -5,6 +5,6 @@ namespace MvcClient.Application
 {
     public interface IOrderService
     {
-        IEnumerable<OrderModel> Filter(OrderFilterDto orderFilterDto);
+        Task<IEnumerable<OrderModel>> Filter(OrderFilterDto orderFilterDto);
     }
 }

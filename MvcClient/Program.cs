@@ -22,6 +22,7 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
 });
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
 var app = builder.Build();
