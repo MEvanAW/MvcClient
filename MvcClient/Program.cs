@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Configuration;
+using MvcClient.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +22,8 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
 });
-    
+builder.Services.AddScoped<IOrderService, OrderService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
