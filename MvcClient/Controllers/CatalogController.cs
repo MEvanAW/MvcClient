@@ -18,6 +18,11 @@ namespace MvcClient.Controllers
             return View(await _catalogService.Filter(new CatalogFilterDto()));
         }
 
+        public IActionResult Create()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Details([FromRoute] Guid id)
         {
             var catalogDetailsDto = new CatalogDetailsDto
