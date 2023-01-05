@@ -7,5 +7,6 @@ namespace MvcClient.Application
     {
         Task<IEnumerable<CatalogListModel>> Filter(CatalogFilterDto catalogFilterDto);
         Task<CatalogDetailsModel> Details(CatalogDetailsDto catalogDetailsDto);
+        Task Create(CatalogCreateDto catalogCreateDto);
     }
 }

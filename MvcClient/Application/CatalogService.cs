@@ -1,9 +1,7 @@
 ﻿using System.Net.Mime;
 using System.Text;
 using MvcClient.Dtos.Catalog;
-using MvcClient.Dtos.Order;
 using MvcClient.Models.Catalog;
-using MvcClient.Models.Order;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -64,6 +62,14 @@ namespace MvcClient.Application
                 {
                     Id = catalogDetailsDto.Id
                 };
+        }
+
+        public async Task Create(CatalogCreateDto catalogCreateDto)
+        {
+            _logger.LogInformation("Create a new catalog with name: {name}", catalogCreateDto.Name);
+            var bodyJson = new StringContent(JsonConvert.SerializeObject(catalogCreateDto), Encoding.UTF8, MediaTypeNames.Application.Json);
+            var httpResponseMessage = await _httpClient.PostAsync("/Catalog/create", bodyJson);
+            httpResponseMessage.EnsureSuccessStatusCode();
         }
     }
 }

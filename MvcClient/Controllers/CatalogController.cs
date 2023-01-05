@@ -18,9 +18,21 @@ namespace MvcClient.Controllers
             return View(await _catalogService.Filter(new CatalogFilterDto()));
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromForm] CatalogCreateDto catalogCreateDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await _catalogService.Create(catalogCreateDto);
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Details([FromRoute] Guid id)
