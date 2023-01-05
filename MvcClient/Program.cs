@@ -25,6 +25,7 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<ICatalogService, CatalogService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IBrandTypeService, BrandTypeService>();
 
 var app = builder.Build();
 

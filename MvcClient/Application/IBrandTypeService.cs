@@ -5,7 +5,7 @@ namespace MvcClient.Application
 {
     public interface IBrandTypeService
     {
-        Task<IEnumerable<BrandModel>> GetAllBrand();
-        Task<IEnumerable<TypeModel>> GetAllType();
+        Task<IEnumerable<BrandModel>> GetAllBrands();
+        Task<IEnumerable<TypeModel>> GetAllTypes();
     }
 }

@@ -17,7 +17,7 @@ namespace MvcClient.Application
             _logger = logger;
         }
 
-        public async Task<IEnumerable<BrandModel>> GetAllBrand()
+        public async Task<IEnumerable<BrandModel>> GetAllBrands()
         {
             _logger.LogInformation("Getting all brands...");
             var httpResponseMessage = await _httpClient.GetAsync("Brand/all");
@@ -37,7 +37,7 @@ namespace MvcClient.Application
                 : new List<BrandModel>();
         }
 
-        public async Task<IEnumerable<TypeModel>> GetAllType()
+        public async Task<IEnumerable<TypeModel>> GetAllTypes()
         {
             _logger.LogInformation("Getting all types...");
             var httpResponseMessage = await _httpClient.GetAsync("Type/all");
