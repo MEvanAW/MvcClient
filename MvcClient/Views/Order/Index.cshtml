@@ -5,9 +5,14 @@
 }
 
 <h1>Orders</h1>
-
+@if (ViewData.ContainsKey("IsDelete"))
+{
+    <div class="alert alert-success" role="alert">
+        Expired Orders Deletion Cron has been successfully initiated! Refresh the page to see changes.
+    </div>
+}
 <p>
-    <a asp-action="Delete">Delete Expired Orders</a>
+    <a asp-action="Index">Refresh</a> | <a asp-action="Delete">Delete Expired Orders</a>
 </p>
 <table class="table">
     <thead>
