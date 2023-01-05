@@ -55,5 +55,15 @@ namespace MvcClient.Controllers
             };
             return View(await _catalogService.Details(catalogDetailsDto));
         }
+
+        public async Task<IActionResult> Edit([FromRoute] Guid id)
+        {
+            var catalogDetailsDto = new CatalogDetailsDto
+            {
+                Id = id
+            };
+            var catalogEditDto = new CatalogEditDto(await _catalogService.Details(catalogDetailsDto));
+            return View(catalogEditDto);
+        }
     }
 }

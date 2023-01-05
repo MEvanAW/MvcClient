@@ -10,7 +10,14 @@
     <select id="CatalogBrandId" name="catalogBrandId" class="form-select" aria-label="Brand select">
         @foreach(var item in brands)
         {
-            <option value="@item.Id">@item.Brand</option>
+            @if (BrandId.HasValue && BrandId.Value == item.Id)
+            {
+                <option selected value="@item.Id">@item.Brand</option>
+            }
+            else
+            {
+                <option value="@item.Id">@item.Brand</option>
+            }
         }
     </select>
 </div>
@@ -19,12 +26,23 @@
     <select id="CatalogTypeId" name="catalogTypeId" class="form-select" aria-label="Type select">
         @foreach(var item in types)
         {
-            <option value="@item.Id">@item.Type</option>
+            @if (TypeId.HasValue && TypeId.Value == item.Id)
+            {
+                <option selected value="@item.Id">@item.Type</option>
+            }
+            else
+            {
+                <option value="@item.Id">@item.Type</option>
+            }
         }
     </select>
 </div>
 
 @code {
+    [Parameter]
+    public Guid? BrandId { get; set; }
+    [Parameter]
+    public Guid? TypeId { get; set; }
     private IEnumerable<BrandModel> brands = Array.Empty<BrandModel>();
     private IEnumerable<TypeModel> types = Array.Empty<TypeModel>();
     private const string BRANDS = "brands";
