@@ -1,13 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MvcClient.Models.Catalog;
+using MvcClient.Application;
+using MvcClient.Dtos.Catalog;
 
 namespace MvcClient.Controllers
 {
     public class CatalogController : Controller
     {
-        public IActionResult Index()
+        private readonly ICatalogService _catalogService;
+
+        public CatalogController(ICatalogService catalogService)
         {
-            return View(new List<CatalogListModel>());
+            _catalogService = catalogService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            return View(await _catalogService.Filter(new CatalogFilterDto()));
         }
     }
 }
