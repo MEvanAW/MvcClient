@@ -6,5 +6,6 @@ namespace MvcClient.Application
     public interface ICatalogService
     {
         Task<IEnumerable<CatalogListModel>> Filter(CatalogFilterDto catalogFilterDto);
+        Task<CatalogDetailsModel> Details(CatalogDetailsDto catalogDetailsDto);
     }
 }

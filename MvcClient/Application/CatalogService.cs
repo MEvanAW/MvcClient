@@ -1,7 +1,9 @@
 ﻿using System.Net.Mime;
 using System.Text;
 using MvcClient.Dtos.Catalog;
+using MvcClient.Dtos.Order;
 using MvcClient.Models.Catalog;
+using MvcClient.Models.Order;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -38,6 +40,30 @@ namespace MvcClient.Application
             return orderModels is not null
                 ? orderModels
                 : new List<CatalogListModel>();
+        }
+
+        public async Task<CatalogDetailsModel> Details(CatalogDetailsDto catalogDetailsDto)
+        {
+            _logger.LogInformation("Getting catalog details with guid: {guid}", catalogDetailsDto.Id);
+            var bodyJson = new StringContent(JsonConvert.SerializeObject(catalogDetailsDto), Encoding.UTF8, MediaTypeNames.Application.Json);
+            var httpResponseMessage = await _httpClient.PostAsync("/Catalog/details", bodyJson);
+            httpResponseMessage.EnsureSuccessStatusCode();
+            string? responseString = await httpResponseMessage.Content.ReadAsStringAsync();
+            var dictionary = responseString is not null
+                ? JsonConvert.DeserializeObject<IDictionary<string, object?>>(responseString)
+                : null;
+            var data = dictionary is not null
+                ? dictionary["data"]
+                : null;
+            var orderDetails = data is not null
+                ? ((JObject)data).ToObject<CatalogDetailsModel>()
+                : null;
+            return orderDetails is not null
+                ? orderDetails
+            : new CatalogDetailsModel
+                {
+                    Id = catalogDetailsDto.Id
+                };
         }
     }
 }
