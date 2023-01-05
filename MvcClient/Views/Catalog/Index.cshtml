@@ -45,7 +45,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @item.PictureUri
+                <img src="@item.PictureUri" class="img-fluid" alt="@item.PictureFileName">
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)

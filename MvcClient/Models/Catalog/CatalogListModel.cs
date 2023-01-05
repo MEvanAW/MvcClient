@@ -12,6 +12,8 @@
 
         public string PictureUri { get; set; } = string.Empty;
 
+        public string PictureFileName { get; set; } = string.Empty;
+
         // Quantity in stock
         public int AvailableStock { get; set; }
     }
