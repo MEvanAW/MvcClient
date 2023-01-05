@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MvcClient.Application;
 using MvcClient.Dtos.Catalog;
-using MvcClient.Models.Catalog;
 
 namespace MvcClient.Controllers
 {
@@ -19,12 +18,13 @@ namespace MvcClient.Controllers
             return View(await _catalogService.Filter(new CatalogFilterDto()));
         }
 
-        public IActionResult Details([FromRoute] Guid id)
+        public async Task<IActionResult> Details([FromRoute] Guid id)
         {
-            return View(new CatalogDetailsModel
+            var catalogDetailsDto = new CatalogDetailsDto
             {
                 Id = id
-            });
+            };
+            return View(await _catalogService.Details(catalogDetailsDto));
         }
     }
 }
