@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MvcClient.Application;
 using MvcClient.Dtos.Catalog;
+using MvcClient.Models.Catalog;
 
 namespace MvcClient.Controllers
 {
@@ -16,6 +17,14 @@ namespace MvcClient.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _catalogService.Filter(new CatalogFilterDto()));
+        }
+
+        public IActionResult Details([FromRoute] Guid id)
+        {
+            return View(new CatalogDetailsModel
+            {
+                Id = id
+            });
         }
     }
 }
