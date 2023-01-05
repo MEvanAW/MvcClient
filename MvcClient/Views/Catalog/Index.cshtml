@@ -5,7 +5,12 @@
 }
 
 <h1>Catalogs</h1>
-
+@if (ViewData.ContainsKey("IsAfterCreate"))
+{
+    <div class="alert alert-success" role="alert">
+        Catalog @if (ViewData.ContainsKey("CatalogName")){ @ViewData["CatalogName"] } has been successfully created!
+    </div>
+}
 <p>
     <a asp-action="Create">Create New</a>
 </p>

@@ -7,6 +7,8 @@ namespace MvcClient.Controllers
     public class CatalogController : Controller
     {
         private readonly ICatalogService _catalogService;
+        private const string _isAfterCreate = "IsAfterCreate";
+        private const string _catalogName = "CatalogName";
 
         public CatalogController(ICatalogService catalogService)
         {
@@ -15,6 +17,14 @@ namespace MvcClient.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if (TempData.ContainsKey(_isAfterCreate))
+            {
+                ViewData[_isAfterCreate] = TempData[_isAfterCreate];
+            }
+            if (TempData.ContainsKey(_catalogName))
+            {
+                ViewData[_catalogName] = TempData[_catalogName];
+            }
             return View(await _catalogService.Filter(new CatalogFilterDto()));
         }
 
@@ -32,6 +42,8 @@ namespace MvcClient.Controllers
                 return BadRequest(ModelState);
             }
             await _catalogService.Create(catalogCreateDto);
+            TempData[_isAfterCreate] = true;
+            TempData[_catalogName] = catalogCreateDto.Name;
             return RedirectToAction("Index");
         }
 
