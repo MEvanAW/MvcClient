@@ -62,5 +62,13 @@ namespace MvcClient.Application
                     Id= orderDetailDto.Id
                 };
         }
+
+        public async Task Delete()
+        {
+            _logger.LogInformation("Deleting expired orders...");
+            var httpResponseMessage = await _httpClient.GetAsync("Crons/initiate");
+            httpResponseMessage.EnsureSuccessStatusCode();
+            return;
+        }
     }
 }

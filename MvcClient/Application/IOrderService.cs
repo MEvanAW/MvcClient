@@ -7,5 +7,6 @@ namespace MvcClient.Application
     {
         Task<IEnumerable<OrderModel>> Filter(OrderFilterDto orderFilterDto);
         Task<OrderDetailModel> Details(OrderDetailDto orderDetailDto);
+        Task Delete();
     }
 }
