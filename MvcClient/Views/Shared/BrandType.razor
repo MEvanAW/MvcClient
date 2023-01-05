@@ -1,0 +1,66 @@
+﻿@implements IDisposable
+@using MvcClient.Models.Catalog.Brand
+@using MvcClient.Models.Catalog.Type
+@using MvcClient.Application
+@inject IBrandTypeService BrandTypeService
+@inject PersistentComponentState ApplicationState
+
+<div class="form-group">
+    <label for="CatalogBrandId" class="control-label">Catalog Brand</label>
+    <select id="CatalogBrandId" name="catalogBrandId" class="form-select" aria-label="Brand select">
+        @foreach(var item in brands)
+        {
+            <option value="@item.Id">@item.Brand</option>
+        }
+    </select>
+</div>
+<div class="form-group">
+    <label for="CatalogTypeId" class="control-label">Catalog Type</label>
+    <select id="CatalogTypeId" name="catalogTypeId" class="form-select" aria-label="Type select">
+        @foreach(var item in types)
+        {
+            <option value="@item.Id">@item.Type</option>
+        }
+    </select>
+</div>
+
+@code {
+    private IEnumerable<BrandModel> brands = Array.Empty<BrandModel>();
+    private IEnumerable<TypeModel> types = Array.Empty<TypeModel>();
+    private const string BRANDS = "brands";
+    private const string TYPES = "types";
+    private PersistingComponentStateSubscription persistingSubscription;
+
+    protected override async Task OnInitializedAsync()
+    {
+        persistingSubscription = ApplicationState.RegisterOnPersisting(PersistBrandTypes);
+        if (!ApplicationState.TryTakeFromJson<IEnumerable<BrandModel>>(BRANDS, out var restoredBrands))
+        {
+            brands = await BrandTypeService.GetAllBrands();
+        }
+        else
+        {
+            brands = restoredBrands!;
+        }
+        if (!ApplicationState.TryTakeFromJson<IEnumerable<TypeModel>>(TYPES, out var restoredTypes))
+        {
+            types = await BrandTypeService.GetAllTypes();
+        }
+        else
+        {
+            types = restoredTypes!;
+        }
+    }
+
+    private Task PersistBrandTypes()
+    {
+        ApplicationState.PersistAsJson(BRANDS, brands);
+        ApplicationState.PersistAsJson(TYPES, types);
+        return Task.CompletedTask;
+    }
+
+    void IDisposable.Dispose()
+    {
+        persistingSubscription.Dispose();
+    }
+}

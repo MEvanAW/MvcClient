@@ -1,4 +1,5 @@
-﻿@model MvcClient.Dtos.Catalog.CatalogCreateDto
+﻿@using MvcClient.Views.Shared
+@model MvcClient.Dtos.Catalog.CatalogCreateDto
 
 @{
     ViewData["Title"] = "Create New Catalog";
@@ -37,16 +38,7 @@
                 <input asp-for="PictureUri" class="form-control" />
                 <span asp-validation-for="PictureUri" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CatalogTypeId" class="control-label"></label>
-                <input asp-for="CatalogTypeId" class="form-control" />
-                <span asp-validation-for="CatalogTypeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CatalogBrandId" class="control-label"></label>
-                <input asp-for="CatalogBrandId" class="form-control" />
-                <span asp-validation-for="CatalogBrandId" class="text-danger"></span>
-            </div>
+            <component type="typeof(BrandType)" render-mode="ServerPrerendered"/>
             <div class="form-group">
                 <label asp-for="AvailableStock" class="control-label"></label>
                 <input asp-for="AvailableStock" class="form-control" />
