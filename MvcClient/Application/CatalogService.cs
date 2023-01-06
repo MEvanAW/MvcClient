@@ -10,9 +10,9 @@ namespace MvcClient.Application
     public class CatalogService : ICatalogService
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger<OrderService> _logger;
+        private readonly ILogger<CatalogService> _logger;
 
-        public CatalogService(HttpClient httpClient, ILogger<OrderService> logger)
+        public CatalogService(HttpClient httpClient, ILogger<CatalogService> logger)
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:7102/Catalog");
