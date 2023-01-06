@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MvcClient.Application;
 using MvcClient.Dtos.Catalog;
+using MvcClient.Enums;
 
 namespace MvcClient.Controllers
 {
     public class CatalogController : Controller
     {
         private readonly ICatalogService _catalogService;
-        private const string _isAfterCreate = "IsAfterCreate";
+        private const string _catalogState = "CatalogState";
         private const string _catalogName = "CatalogName";
 
         public CatalogController(ICatalogService catalogService)
@@ -17,12 +18,9 @@ namespace MvcClient.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (TempData.ContainsKey(_isAfterCreate))
+            if (TempData.ContainsKey(_catalogState))
             {
-                ViewData[_isAfterCreate] = TempData[_isAfterCreate];
-            }
-            if (TempData.ContainsKey(_catalogName))
-            {
+                ViewData[_catalogState] = TempData[_catalogState];
                 ViewData[_catalogName] = TempData[_catalogName];
             }
             return View(await _catalogService.Filter(new CatalogFilterDto()));
@@ -42,7 +40,7 @@ namespace MvcClient.Controllers
                 return BadRequest(ModelState);
             }
             await _catalogService.Create(catalogCreateDto);
-            TempData[_isAfterCreate] = true;
+            TempData[_catalogState] = CatalogState.Created;
             TempData[_catalogName] = catalogCreateDto.Name;
             return RedirectToAction("Index");
         }
@@ -75,6 +73,8 @@ namespace MvcClient.Controllers
                 return BadRequest(ModelState);
             }
             await _catalogService.Update(catalogEditDto);
+            TempData[_catalogState] = CatalogState.Edited;
+            TempData[_catalogName] = catalogEditDto.Name;
             return RedirectToAction("Index");
         }
     }

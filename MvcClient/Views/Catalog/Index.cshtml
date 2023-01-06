@@ -1,14 +1,26 @@
 ﻿@model IEnumerable<MvcClient.Models.Catalog.CatalogListModel>
+@using MvcClient.Enums
 
 @{
     ViewData["Title"] = "Catalog";
 }
 
 <h1>Catalogs</h1>
-@if (ViewData.ContainsKey("IsAfterCreate"))
+@if (ViewData.ContainsKey("CatalogState"))
 {
     <div class="alert alert-success" role="alert">
-        Catalog @if (ViewData.ContainsKey("CatalogName")){ @ViewData["CatalogName"] } has been successfully created!
+        Catalog @if (ViewData.ContainsKey("CatalogName"))
+        {
+            @ViewData["CatalogName"]
+        }
+        has been successfully @if (((CatalogState)ViewData["CatalogState"]!) == CatalogState.Created)
+        {
+            @("created!")
+        }
+        else
+        {
+            @("edited!")
+        }
     </div>
 }
 <p>
