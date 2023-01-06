@@ -11,11 +11,12 @@ namespace MvcClient.Application
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<CatalogService> _logger;
+        private const string _catalog = "/Catalog";
 
         public CatalogService(HttpClient httpClient, ILogger<CatalogService> logger)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("https://localhost:7102/Catalog");
+            _httpClient.BaseAddress = new Uri("https://localhost:7102");
             _logger = logger;
         }
 
@@ -23,7 +24,7 @@ namespace MvcClient.Application
         {
             _logger.LogInformation("Filtering catalog with Name \"{name}\" and Description \"{description}\"", catalogFilterDto.Name, catalogFilterDto.Description);
             var bodyJson = new StringContent(JsonConvert.SerializeObject(catalogFilterDto), Encoding.UTF8, MediaTypeNames.Application.Json);
-            var httpResponseMessage = await _httpClient.PostAsync(string.Empty, bodyJson);
+            var httpResponseMessage = await _httpClient.PostAsync(_catalog, bodyJson);
             httpResponseMessage.EnsureSuccessStatusCode();
             string? responseString = await httpResponseMessage.Content.ReadAsStringAsync();
             var dictionary = responseString is not null

@@ -91,6 +91,7 @@ namespace MvcClient.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public async Task<IActionResult> AddToBasket([FromRoute] Guid id)
         {
             var catalogDetailsDto = new CatalogDetailsDto

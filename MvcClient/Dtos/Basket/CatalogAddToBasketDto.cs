@@ -1,6 +1,6 @@
 ﻿using MvcClient.Models.Catalog;
 
-namespace MvcClient.Dtos.Catalog
+namespace MvcClient.Dtos.Basket
 {
     public class CatalogAddToBasketDto
     {

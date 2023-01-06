@@ -6,5 +6,6 @@ namespace MvcClient.Application
     public interface IBasketService
     {
         Task<IEnumerable<BasketListModel>> Filter(BasketFilterDto basketFilterDto);
+        Task AddToBasket(CatalogAddToBasketDto catalogAddToBasketDto);
     }
 }
