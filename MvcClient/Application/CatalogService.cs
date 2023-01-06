@@ -32,11 +32,11 @@ namespace MvcClient.Application
             var data = dictionary is not null
                 ? dictionary["data"]
                 : null;
-            var orderModels = data is not null
+            var catalogModels = data is not null
                 ? ((JArray)data).ToObject<IEnumerable<CatalogListModel>>()
                 : null;
-            return orderModels is not null
-                ? orderModels
+            return catalogModels is not null
+                ? catalogModels
                 : new List<CatalogListModel>();
         }
 
@@ -53,12 +53,12 @@ namespace MvcClient.Application
             var data = dictionary is not null
                 ? dictionary["data"]
                 : null;
-            var orderDetails = data is not null
+            var catalogDetails = data is not null
                 ? ((JObject)data).ToObject<CatalogDetailsModel>()
                 : null;
-            return orderDetails is not null
-                ? orderDetails
-            : new CatalogDetailsModel
+            return catalogDetails is not null
+                ? catalogDetails
+                : new CatalogDetailsModel
                 {
                     Id = catalogDetailsDto.Id
                 };
@@ -78,6 +78,27 @@ namespace MvcClient.Application
             var bodyJson = new StringContent(JsonConvert.SerializeObject(catalogEditDto), Encoding.UTF8, MediaTypeNames.Application.Json);
             var httpResponseMessage = await _httpClient.PostAsync("/Catalog/update", bodyJson);
             httpResponseMessage.EnsureSuccessStatusCode();
+        }
+
+        public async Task<string> Delete(CatalogDeleteDto catalogDeleteDto)
+        {
+            _logger.LogInformation("Deleting catalog with guid: {guid}", catalogDeleteDto.Id);
+            var bodyJson = new StringContent(JsonConvert.SerializeObject(catalogDeleteDto), Encoding.UTF8, MediaTypeNames.Application.Json);
+            var httpResponseMessage = await _httpClient.PostAsync("/Catalog/delete", bodyJson);
+            httpResponseMessage.EnsureSuccessStatusCode();
+            string? responseString = await httpResponseMessage.Content.ReadAsStringAsync();
+            var dictionary = responseString is not null
+                ? JsonConvert.DeserializeObject<IDictionary<string, object?>>(responseString)
+                : null;
+            var data = dictionary is not null
+                ? dictionary["data"]
+                : null;
+            var catalog = data is not null
+                ? ((JObject)data).ToObject<CatalogFilterDto>()
+                : null;
+            return catalog is not null
+                ? catalog.Name
+                : string.Empty;
         }
     }
 }

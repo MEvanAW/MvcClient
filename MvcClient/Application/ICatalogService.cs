@@ -9,5 +9,6 @@ namespace MvcClient.Application
         Task<CatalogDetailsModel> Details(CatalogDetailsDto catalogDetailsDto);
         Task Create(CatalogCreateDto catalogCreateDto);
         Task Update(CatalogEditDto catalogEditDto);
+        Task<string> Delete(CatalogDeleteDto catalogDeleteDto);
     }
 }
