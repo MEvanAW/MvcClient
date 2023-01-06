@@ -71,5 +71,13 @@ namespace MvcClient.Application
             var httpResponseMessage = await _httpClient.PostAsync("/Catalog/create", bodyJson);
             httpResponseMessage.EnsureSuccessStatusCode();
         }
+
+        public async Task Update(CatalogEditDto catalogEditDto)
+        {
+            _logger.LogInformation("Update catalog with guid: {guid}", catalogEditDto.Id);
+            var bodyJson = new StringContent(JsonConvert.SerializeObject(catalogEditDto), Encoding.UTF8, MediaTypeNames.Application.Json);
+            var httpResponseMessage = await _httpClient.PostAsync("/Catalog/update", bodyJson);
+            httpResponseMessage.EnsureSuccessStatusCode();
+        }
     }
 }

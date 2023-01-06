@@ -56,6 +56,7 @@ namespace MvcClient.Controllers
             return View(await _catalogService.Details(catalogDetailsDto));
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit([FromRoute] Guid id)
         {
             var catalogDetailsDto = new CatalogDetailsDto
@@ -64,6 +65,17 @@ namespace MvcClient.Controllers
             };
             var catalogEditDto = new CatalogEditDto(await _catalogService.Details(catalogDetailsDto));
             return View(catalogEditDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromForm] CatalogEditDto catalogEditDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await _catalogService.Update(catalogEditDto);
+            return RedirectToAction("Index");
         }
     }
 }
