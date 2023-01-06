@@ -77,5 +77,17 @@ namespace MvcClient.Controllers
             TempData[_catalogName] = catalogEditDto.Name;
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var catalogDeleteDto = new CatalogDeleteDto
+            {
+                Id = id
+            };
+            string name = await _catalogService.Delete(catalogDeleteDto);
+            TempData[_catalogState] = CatalogState.Deleted;
+            TempData[_catalogName] = name;
+            return RedirectToAction("Index");
+        }
     }
 }

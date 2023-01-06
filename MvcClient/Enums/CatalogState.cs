@@ -4,6 +4,7 @@
     {
         Unset,
         Created,
-        Edited
+        Edited,
+        Deleted
     }
 }

@@ -3,23 +3,29 @@
 
 @{
     ViewData["Title"] = "Catalog";
+    CatalogState catalogState;
 }
 
 <h1>Catalogs</h1>
 @if (ViewData.ContainsKey("CatalogState"))
 {
+    catalogState = (CatalogState)ViewData["CatalogState"]!;
     <div class="alert alert-success" role="alert">
         Catalog @if (ViewData.ContainsKey("CatalogName"))
         {
             @ViewData["CatalogName"]
         }
-        has been successfully @if (((CatalogState)ViewData["CatalogState"]!) == CatalogState.Created)
+        has been successfully @if (catalogState == CatalogState.Created)
         {
             @("created!")
         }
-        else
+        else if (catalogState == CatalogState.Edited)
         {
             @("edited!")
+        }
+        else
+        {
+            @("deleted!")
         }
     </div>
 }
@@ -60,15 +66,15 @@
                 <img src="@item.PictureUri" class="img-fluid" alt="@item.PictureFileName">
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                SGD @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
                 @item.AvailableStock
             </td>
             <td>
-                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id })<br>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id })<br>
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })<br>
                 @Html.ActionLink("Add to Basket", "AddToBasket", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
