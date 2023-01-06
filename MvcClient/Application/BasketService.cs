@@ -13,6 +13,7 @@ namespace MvcClient.Application
         private readonly ILogger<BasketService> _logger;
         private const string _filter = "/api/Basket";
         private const string _add = "/api/Basket/add";
+        private const string _delete = "/api/Basket/delete";
 
         public BasketService(HttpClient httpClient, ILogger<BasketService> logger)
         {
@@ -47,6 +48,14 @@ namespace MvcClient.Application
             _logger.LogInformation("Adding catalog to basket with buyer \"{name}\" and product \"{product}\"", catalogAddToBasketDto.Buyer, catalogAddToBasketDto.ProductName);
             var bodyJson = new StringContent(JsonConvert.SerializeObject(catalogAddToBasketDto), Encoding.UTF8, MediaTypeNames.Application.Json);
             var httpResponseMessage = await _httpClient.PostAsync(_add, bodyJson);
+            httpResponseMessage.EnsureSuccessStatusCode();
+        }
+
+        public async Task Delete(BasketDeleteDto basketDeleteDto)
+        {
+            _logger.LogInformation("Deleting basket with buyer \"{name}\" and id \"{id}\"", basketDeleteDto.Buyer, basketDeleteDto.CacheId);
+            var bodyJson = new StringContent(JsonConvert.SerializeObject(basketDeleteDto), Encoding.UTF8, MediaTypeNames.Application.Json);
+            var httpResponseMessage = await _httpClient.PostAsync(_delete, bodyJson);
             httpResponseMessage.EnsureSuccessStatusCode();
         }
     }

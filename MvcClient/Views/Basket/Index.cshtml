@@ -1,11 +1,42 @@
 ﻿@model IEnumerable<MvcClient.Models.Basket.BasketListModel>
+@using MvcClient.Enums
 
 @{
     ViewData["Title"] = "Basket";
+    BasketState basketState;
+    string? name;
 }
 
 <h1>Basket</h1>
-
+@if (ViewData.ContainsKey("BasketState"))
+{
+    basketState = (BasketState)ViewData["BasketState"]!;
+    name = ViewData.ContainsKey("Name") ? (string) ViewData["Name"]! : null;
+    <div class="alert alert-success" role="alert">
+        @if (basketState == BasketState.Added)
+        {
+            @if (name is not null)
+            {
+                @("Catalog " + name + " has been successfully added to basket!")
+            }
+            else
+            {
+                @("The Catalog has been successfully added to basket!")
+            }
+        }
+        else
+        {
+            @if (name is not null)
+            {
+                @("The basket item has been successfully removed from " + name + "'s Basket")
+            }
+            else
+            {
+                @("The basket item has been successfully removed.")
+            }
+        }
+    </div>
+}
 <p>
     To create a new basket, Add to Basket from <a asp-controller="Catalog" asp-action="Index">Catalog</a>
 </p>
@@ -50,7 +81,7 @@
             </td>
             <td>
                 @Html.ActionLink("Checkout", "Checkout", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Delete", "Delete", new { buyer = item.Buyer, id = item.Id })
             </td>
         </tr>
 }

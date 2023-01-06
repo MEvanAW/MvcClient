@@ -48,6 +48,10 @@ namespace MvcClient.Controllers
 
         public async Task<IActionResult> Details([FromRoute] Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var catalogDetailsDto = new CatalogDetailsDto
             {
                 Id = id
@@ -58,6 +62,10 @@ namespace MvcClient.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit([FromRoute] Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var catalogDetailsDto = new CatalogDetailsDto
             {
                 Id = id
@@ -81,6 +89,10 @@ namespace MvcClient.Controllers
 
         public async Task<IActionResult> Delete(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var catalogDeleteDto = new CatalogDeleteDto
             {
                 Id = id
@@ -94,6 +106,10 @@ namespace MvcClient.Controllers
         [HttpGet]
         public async Task<IActionResult> AddToBasket([FromRoute] Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var catalogDetailsDto = new CatalogDetailsDto
             {
                 Id = id

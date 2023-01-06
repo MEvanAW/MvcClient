@@ -7,5 +7,6 @@ namespace MvcClient.Application
     {
         Task<IEnumerable<BasketListModel>> Filter(BasketFilterDto basketFilterDto);
         Task AddToBasket(CatalogAddToBasketDto catalogAddToBasketDto);
+        Task Delete(BasketDeleteDto basketDeleteDto);
     }
 }
