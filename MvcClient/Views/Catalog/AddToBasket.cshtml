@@ -1,0 +1,45 @@
+﻿@model MvcClient.Models.Catalog.CatalogAddToBasketModel
+
+@{
+    ViewData["Title"] = "Add to Basket";
+}
+
+<h1>Add Catalog to Basket</h1>
+<h4>Please fill the following form.</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddToBasket">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Buyer" class="control-label"></label>
+                <input asp-for="Buyer" class="form-control" />
+                <span asp-validation-for="Buyer" class="text-danger"></span>
+            </div>
+            <input type="hidden" name="productId" value="@Model.ProductId" />
+            <input type="hidden" name="productName" value="@Model.ProductName"/>
+            <input type="hidden" name="unitPrice" value="@Model.UnitPrice" />
+            <div class="form-group">
+                <label for="availableStock" class="control-label">Available Stock</label>
+                <input id="availableStock" class="form-control" value="@Model.AvailableStock" disabled readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" max="@Model.AvailableStock"/>
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Add to Basket" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

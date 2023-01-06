@@ -2,6 +2,7 @@
 using MvcClient.Application;
 using MvcClient.Dtos.Catalog;
 using MvcClient.Enums;
+using MvcClient.Models.Catalog;
 
 namespace MvcClient.Controllers
 {
@@ -88,6 +89,16 @@ namespace MvcClient.Controllers
             TempData[_catalogState] = CatalogState.Deleted;
             TempData[_catalogName] = name;
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> AddToBasket([FromRoute] Guid id)
+        {
+            var catalogDetailsDto = new CatalogDetailsDto
+            {
+                Id = id
+            };
+            var catalogAddToBasketModel = new CatalogAddToBasketModel(await _catalogService.Details(catalogDetailsDto));
+            return View(catalogAddToBasketModel);
         }
     }
 }
