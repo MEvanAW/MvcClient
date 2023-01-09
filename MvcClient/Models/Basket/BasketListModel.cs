@@ -2,10 +2,15 @@
 {
     public class BasketListModel
     {
-        public Guid Id { get; set; }
         public string Buyer { get; set; } = string.Empty;
-        public string ProductName { get; set; } = string.Empty;
-        public decimal UnitPrice { get; set; }
-        public int Quantity { get; set; }
+        public IEnumerable<BasketItemModel>? Items { get; set; }
+
+        //public BasketListModel() { }
+        //public BasketListModel(BasketItemListModel basketItemListModel)
+        //{
+        //    Buyer = basketItemListModel.Buyer;
+        //    Items = new List<BasketItemModel>();
+        //    Items.Append(basketItemListModel);
+        //}
     }
 }

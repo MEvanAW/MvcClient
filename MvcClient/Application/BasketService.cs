@@ -35,12 +35,41 @@ namespace MvcClient.Application
             var data = dictionary is not null
                 ? dictionary["data"]
                 : null;
-            var basketModels = data is not null
-                ? ((JArray)data).ToObject<IEnumerable<BasketListModel>>()
+            var basketItems = data is not null
+                ? ((JArray)data).ToObject<List<BasketItemListModel>>()
                 : null;
-            return basketModels is not null
-                ? basketModels
-                : new List<BasketListModel>();
+            var baskets = new List<BasketListModel>();
+            if (basketItems is null || basketItems.Count <= 0)
+            {
+                return baskets;
+            }
+            basketItems.Sort(delegate(BasketItemListModel a, BasketItemListModel b)
+            {
+                return a.Buyer.CompareTo(b.Buyer);
+            });
+            string buyer = string.Empty;
+            int basketIndex = -1;
+            foreach (var item in basketItems)
+            {
+                if (item.Buyer != buyer)
+                {
+                    baskets.Add(new BasketListModel
+                    {
+                        Buyer = item.Buyer,
+                        Items = new List<BasketItemModel>()
+                        {
+                            item
+                        }
+                    });
+                    buyer = item.Buyer;
+                    basketIndex++;
+                }
+                else
+                {
+                    ((List<BasketItemModel>) baskets[basketIndex].Items!).Add(item);
+                }
+            }
+            return baskets;
         }
 
         public async Task AddToBasket(CatalogAddToBasketDto catalogAddToBasketDto)
