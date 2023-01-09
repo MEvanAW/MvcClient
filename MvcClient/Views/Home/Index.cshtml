@@ -5,6 +5,12 @@
 }
 <div class="text-center">
     <h1 class="display-4">Welcome to MvcClient</h1>
+    @if (ViewData.ContainsKey("IsError"))
+    {
+        <div class="alert alert-warning" role="alert">
+            Logout endpoint unreachable. If the issue persists, please contact the administrator.
+        </div>
+    }
     @if (User.Claims.Count() > 0)
     {
         <p>Please use navbar above to navigate around the website.</p>

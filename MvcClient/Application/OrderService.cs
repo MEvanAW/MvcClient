@@ -33,11 +33,17 @@ namespace MvcClient.Application
                 ? dictionary["data"]
                 : null;
             var orderModels = data is not null
-                ? ((JArray) data).ToObject<IEnumerable<OrderModel>>()
+                ? ((JArray) data).ToObject<List<OrderModel>>()
                 : null;
-            return orderModels is not null
-                ? orderModels
-                : new List<OrderModel>();
+            if (orderModels is null)
+            {
+                return new List<OrderModel>();
+            }
+            orderModels.Sort(delegate (OrderModel a, OrderModel b)
+            {
+                return - a.CreatedDateTime.CompareTo(b.CreatedDateTime);
+            });
+            return orderModels;
         }
 
         public async Task<OrderDetailModel> Details(OrderDetailDto orderDetailDto)

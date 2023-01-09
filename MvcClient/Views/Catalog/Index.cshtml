@@ -32,6 +32,12 @@
 <p>
     <a asp-action="Create">Create New Catalog</a>
 </p>
+@if (ViewData.ContainsKey("IsError"))
+{
+    <div class="alert alert-warning" role="alert">
+        Catalog server is unreachable. Try to refresh the page. If the issue persists, please contact the administrator.
+    </div>
+}
 <table class="table">
     <thead>
         <tr>

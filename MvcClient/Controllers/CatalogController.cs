@@ -2,6 +2,7 @@
 using MvcClient.Application;
 using MvcClient.Dtos.Catalog;
 using MvcClient.Enums;
+using MvcClient.Models.Basket;
 using MvcClient.Models.Catalog;
 
 namespace MvcClient.Controllers
@@ -9,33 +10,53 @@ namespace MvcClient.Controllers
     public class CatalogController : Controller
     {
         private readonly ICatalogService _catalogService;
+        private readonly ILogger<CatalogController> _logger;
         private const string _catalogState = "CatalogState";
         private const string _catalogName = "CatalogName";
+        private const string _isError = "IsError";
 
-        public CatalogController(ICatalogService catalogService)
+        public CatalogController(ICatalogService catalogService, ILogger<CatalogController> logger)
         {
             _catalogService = catalogService;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
         {
-            if (TempData.ContainsKey(_catalogState))
+            _logger.LogInformation("Catalog Index call.");
+            IEnumerable<CatalogListModel> model;
+            try
             {
-                ViewData[_catalogState] = TempData[_catalogState];
-                ViewData[_catalogName] = TempData[_catalogName];
+                var filterTask = _catalogService.Filter(new CatalogFilterDto());
+                if (TempData.ContainsKey(_catalogState))
+                {
+                    ViewData[_catalogState] = TempData[_catalogState];
+                    ViewData[_catalogName] = TempData[_catalogName];
+                }
+                model = await filterTask;
             }
-            return View(await _catalogService.Filter(new CatalogFilterDto()));
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError("Error getting catalogs with the following exception: " + ex.Message + Environment.NewLine +
+                    ex.InnerException + Environment.NewLine +
+                    ex.StackTrace, ex, this);
+                model = new List<CatalogListModel>();
+                ViewData[_isError] = true;
+            }
+            return View(model);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
+            _logger.LogInformation("Catalog Create Get call.");
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] CatalogCreateDto catalogCreateDto)
         {
+            _logger.LogInformation("Catalog Create Post call.");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -48,6 +69,7 @@ namespace MvcClient.Controllers
 
         public async Task<IActionResult> Details([FromRoute] Guid id)
         {
+            _logger.LogInformation("Catalog Details call.");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -62,6 +84,7 @@ namespace MvcClient.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit([FromRoute] Guid id)
         {
+            _logger.LogInformation("Catalog Edit Get call.");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -77,6 +100,7 @@ namespace MvcClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit([FromForm] CatalogEditDto catalogEditDto)
         {
+            _logger.LogInformation("Catalog Edit Post call.");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -89,6 +113,7 @@ namespace MvcClient.Controllers
 
         public async Task<IActionResult> Delete(Guid id)
         {
+            _logger.LogInformation("Catalog Delete {guid} call.", id);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -106,6 +131,7 @@ namespace MvcClient.Controllers
         [HttpGet]
         public async Task<IActionResult> AddToBasket([FromRoute] Guid id)
         {
+            _logger.LogInformation("Catalog Get Add {guid} ToBasket call.", id);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
