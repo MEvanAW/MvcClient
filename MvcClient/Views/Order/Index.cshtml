@@ -14,12 +14,18 @@
 else if (ViewData.ContainsKey("Name"))
 {
     <div class="alert alert-success" role="alert">
-        @(ViewData["Name"]+"'s basket has been successfully checked out! Refresh the page to see changes.")
+        @(ViewData["Name"]+"'s basket has been successfully checked out! If the change hasn't been reflected, try to refresh the page. Changes may subject to delay.")
     </div>
 }
 <p>
     <a asp-action="Index">Refresh</a> | <a asp-action="Delete">Delete Expired Orders</a>
 </p>
+@if (ViewData.ContainsKey("IsError"))
+{
+    <div class="alert alert-warning" role="alert">
+        Server is unreachable. Try to refresh the page. If the issue persists, please contact the administrator.
+    </div>
+}
 <table class="table">
     <thead>
         <tr>
