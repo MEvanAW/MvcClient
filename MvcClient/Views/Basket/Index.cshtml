@@ -79,7 +79,7 @@ else
                                 </tr>
                             </thead>
                             <tbody>
-                                <form>
+                                <form asp-action="Checkout">
                                     <input type="hidden" name="buyer" value="@basket.Buyer" />
                                 @foreach (var item in basket.Items!)
                                 {
@@ -97,7 +97,7 @@ else
                                             </label>
                                         </td>
                                         <td>
-                                            @item.UnitPrice
+                                            SGD @item.UnitPrice
                                         </td>
                                         <td>
                                             @item.Quantity

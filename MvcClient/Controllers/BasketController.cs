@@ -2,6 +2,7 @@
 using MvcClient.Application;
 using MvcClient.Dtos.Basket;
 using MvcClient.Enums;
+using MvcClient.Models.Basket;
 using MvcClient.Models.Catalog;
 
 namespace MvcClient.Controllers
@@ -39,6 +40,18 @@ namespace MvcClient.Controllers
             TempData[_basketState] = BasketState.Added;
             TempData[_name] = requestModel.ProductName;
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Checkout([FromForm] BasketCheckoutRequest requestModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await _basketService.Checkout(new BasketCheckoutDto(requestModel));
+            TempData[_name] = requestModel.Buyer;
+            return RedirectToAction("Index", "Order");
         }
 
         public async Task<IActionResult> Delete(string buyer, Guid id)

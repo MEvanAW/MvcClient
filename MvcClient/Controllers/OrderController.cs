@@ -8,6 +8,7 @@ namespace MvcClient.Controllers
     {
         private readonly IOrderService _orderService;
         private const string _isDelete = "IsDelete";
+        private const string _name = "Name";
 
         public OrderController(IOrderService orderService)
         {
@@ -19,6 +20,10 @@ namespace MvcClient.Controllers
             if (TempData.ContainsKey(_isDelete))
             {
                 ViewData[_isDelete] = TempData[_isDelete];
+            }
+            else if (TempData.ContainsKey(_name))
+            {
+                ViewData[_name] = TempData[_name];
             }
             return View(await _orderService.Filter(new OrderFilterDto()));
         }

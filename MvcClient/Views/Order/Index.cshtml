@@ -11,6 +11,12 @@
         Expired Orders Deletion Cron has been successfully initiated! Refresh the page to see changes.
     </div>
 }
+else if (ViewData.ContainsKey("Name"))
+{
+    <div class="alert alert-success" role="alert">
+        @(ViewData["Name"]+"'s basket has been successfully checked out! Refresh the page to see changes.")
+    </div>
+}
 <p>
     <a asp-action="Index">Refresh</a> | <a asp-action="Delete">Delete Expired Orders</a>
 </p>
@@ -48,7 +54,7 @@
                 @Html.DisplayFor(modelItem => item.CreatedDateTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TotalPrice)
+                SGD @Html.DisplayFor(modelItem => item.TotalPrice)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
