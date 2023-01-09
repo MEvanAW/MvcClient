@@ -49,17 +49,20 @@ else
     <div class="accordion" id="basketAccordion">
         @foreach (var basket in Model)
         {
+            string heading = "heading" + basket.Buyer;
+            string collapse = "collapse" + basket.Buyer;
             <div class="accordion-item">
-                <h2 class="accordion-header" id="@("heading"+basket.Buyer)">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="@("#collapse"+basket.Buyer)" aria-expanded="true" aria-controls="@("collapse"+basket.Buyer)">
+                <h2 class="accordion-header" id="@heading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="@("#collapse"+basket.Buyer)" aria-expanded="true" aria-controls="@collapse">
                         @basket.Buyer
                     </button>
                 </h2>
-                <div id="@("collapse"+basket.Buyer)" class="accordion-collapse collapse show" aria-labelledby="@("heading"+basket.Buyer)">
+                <div id="@collapse" class="accordion-collapse collapse show" aria-labelledby="@heading">
                     <div class="accordion-body">
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>
                                         ID
                                     </th>
@@ -76,27 +79,44 @@ else
                                 </tr>
                             </thead>
                             <tbody>
-                            @foreach (var item in basket.Items!)
-                            {
-                                <tr>
-                                    <td>
-                                        @item.Id
-                                    </td>
-                                    <td>
-                                        @item.ProductName
-                                    </td>
-                                    <td>
-                                        @item.UnitPrice
-                                    </td>
-                                    <td>
-                                        @item.Quantity
-                                    </td>
-                                    <td>
-                                        @Html.ActionLink("Checkout", "Checkout", new { /* id=item.PrimaryKey */ }) |
-                                        @Html.ActionLink("Delete", "Delete", new { buyer = basket.Buyer, id = item.Id })
-                                    </td>
-                                </tr>
-                            }
+                                <form>
+                                    <input type="hidden" name="buyer" value="@basket.Buyer" />
+                                @foreach (var item in basket.Items!)
+                                {
+                                    string flexCheck = "flexCheck" + item.Id;
+                                    <tr>
+                                        <td>
+                                            <input class="form-check-input" type="checkbox" value="@item.Id" name="itemsToPurchase" id="@flexCheck">
+                                        </td>
+                                        <td>
+                                            @item.Id
+                                        </td>
+                                        <td>
+                                            <label class="form-check-label" for="@flexCheck">
+                                                @item.ProductName
+                                            </label>
+                                        </td>
+                                        <td>
+                                            @item.UnitPrice
+                                        </td>
+                                        <td>
+                                            @item.Quantity
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Delete", "Delete", new { buyer = basket.Buyer, id = item.Id })
+                                        </td>
+                                    </tr>
+                                }
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <div class="form-group">
+                                                <input type="submit" value="Checkout" class="btn btn-primary" />
+                                            </div>
+                                        </td>
+                                    <td></td><td></td><td></td><td></td>
+                                    </tr>
+                                </form>
                             </tbody>
                         </table>
                     </div>
