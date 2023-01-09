@@ -23,7 +23,7 @@ namespace MvcClient.Controllers
         {
             return SignOut(new AuthenticationProperties
             {
-                RedirectUri = "/Home/Index"
+                RedirectUri = ""
             }, "Cookies", "oidc");
         }
 
