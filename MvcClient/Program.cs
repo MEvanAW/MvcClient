@@ -1,9 +1,10 @@
-using Microsoft.Extensions.Configuration;
+using MvcClient.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+builder.Services.AddControllersWithViews();
+builder.Services.AddServerSideBlazor();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
@@ -22,6 +23,11 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
 });
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<ICatalogService, CatalogService>();
+builder.Services.AddScoped<IBrandTypeService, BrandTypeService>();
+builder.Services.AddScoped<IBasketService, BasketService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 var app = builder.Build();
 
@@ -50,5 +56,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapBlazorHub();
 
 app.Run();

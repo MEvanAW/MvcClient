@@ -1,0 +1,74 @@
+﻿@model IEnumerable<MvcClient.Models.Order.OrderModel>
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h1>Orders</h1>
+@if (ViewData.ContainsKey("IsDelete"))
+{
+    <div class="alert alert-success" role="alert">
+        Expired Orders Deletion Cron has been successfully initiated! Refresh the page to see changes.
+    </div>
+}
+else if (ViewData.ContainsKey("Name"))
+{
+    <div class="alert alert-success" role="alert">
+        @(ViewData["Name"]+"'s basket has been successfully checked out! If the change hasn't been reflected, try to refresh the page. Changes may subject to delay.")
+    </div>
+}
+<p>
+    <a asp-action="Index">Refresh</a> | <a asp-action="Delete">Delete Expired Orders</a>
+</p>
+@if (ViewData.ContainsKey("IsError"))
+{
+    <div class="alert alert-warning" role="alert">
+        Order server is unreachable. Try to refresh the page. If the issue persists, please contact the administrator.
+    </div>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BuyerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BuyerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDateTime)
+            </td>
+            <td>
+                SGD @Html.DisplayFor(modelItem => item.TotalPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id=item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

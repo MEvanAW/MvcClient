@@ -8,22 +8,32 @@ namespace MvcClient.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+
         public IActionResult Index()
         {
+            _logger.LogInformation("Home Index call.");
             return View();
         }
 
         [Authorize]
         public IActionResult Login()
         {
+            _logger.LogInformation("Login call.");
             return RedirectToAction("Index");
         }
 
         public IActionResult Logout()
         {
+            _logger.LogInformation("Logout call.");
             return SignOut(new AuthenticationProperties
             {
-                RedirectUri = "/Home/Index"
+                RedirectUri = ""
             }, "Cookies", "oidc");
         }
 
